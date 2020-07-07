@@ -1,0 +1,22 @@
+# ---------------------------------------------------------------------
+# General Compiler and linker Defines for Windows
+# ---------------------------------------------------------------------
+CFLAGS=		-MD -MP -DPIC -DDDL_EXPORT -I. -I/opt/cross/include/fb -I/opt/cross/include -c
+FB_LIB=	 /opt/cross/implib/fb-1.5/ib_util_ms.lib -L/opt/cross/implib/openssl/ -leay32
+RM=		rm -f
+
+.SUFFIXES: .o .c 
+
+
+all:	fb_shash.dll
+
+w32_fb_shash.o:fb_shash.c config.h inc.uuencode.c inc.utils.c inc.hash.c inc.hmac.c
+	$(CC) $< $(CFLAGS) -o $@
+
+fb_shash.dll: w32_fb_shash.o
+	$(CC) -shared -o $@ -Wl,--out-implib,libw32_fb_shash.a -Wl,--kill-at $< $(FB_LIB)
+	$(STRIP) $@
+	@echo ------------------------------------------------------
+	@echo You need to copy fb_shash.dll to the interbase lib directory
+	@echo in order for the server to load it. 
+	@echo ------------------------------------------------------

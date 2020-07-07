@@ -1,0 +1,6 @@
+LIBRARY fb_shash.dll
+EXPORTS
+fb_shash_hash
+fb_shash_hash_blob
+fb_shash_hmac
+fb_shash_hmac_blob
